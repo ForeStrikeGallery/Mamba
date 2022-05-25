@@ -1,7 +1,7 @@
 ~ Example mamba program
 
 num a = 1;
-num b = 2
+num b = 2;
 
 num c;
 
