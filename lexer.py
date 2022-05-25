@@ -3,23 +3,19 @@ import re
 
 def read_string(delim, stream):
     token = ""
-    stream.move_next()
 
     while True:
-        ch = stream.peek()
+        ch = stream.peek_and_move()
         if ch is not None:
             if ch == delim:
-                stream.move_next()
                 break 
             else:
                 token += ch
-                stream.move_next()
 
     return token 
 
 def read(first_char, stream, allowed_chars):
     token = first_char
-    stream.move_next()
 
     while True:
         ch = stream.peek()
@@ -39,22 +35,19 @@ def tokenize(stream):
     while True:
         print("Tokens: ", tokens)
         try:
-            ch = stream.peek() 
+            ch = stream.peek_and_move() 
 
             if ch == None:
                 break
 
             print("top level: ", ch)
             if ch in " \n\t~": # ignore white spaces and comments 
-                stream.move_next()
                 continue
 
             elif ch in "{}();=<>":
                 tokens.append((ch, ""))
-                stream.move_next()
             elif ch in "+-/*":
                 tokens.append(("operator", ch))
-                stream.move_next()
 
             elif ch in ('"', "'"):
                 tokens.append(("string", read_string(ch, stream)))

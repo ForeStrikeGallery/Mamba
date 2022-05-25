@@ -19,3 +19,7 @@ class PeekableStream:
         if self.next != None:
             self._fill() 
 
+    def peek_and_move(self):
+        val = self.peek()
+        self.move_next()
+        return val
