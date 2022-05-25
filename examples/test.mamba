@@ -1,10 +1,28 @@
-// Example mamba program
+~ Example mamba program
 
-int a = 1;
-int b = 2
+num a = 1;
+num b = 2
 
-int c;
+num c;
 
 c = a + b;
 
-print(c)
+out(c)
+
+num k;
+
+in(k)
+
+loop (num i 0 to k) {
+    out(i)
+}
+
+bool isTrue;
+
+char m;
+
+if (c > k) {
+    out("c greater than k")
+}
+
+
