@@ -1,5 +1,7 @@
 import sys
 from lexer import tokenize 
+from peekable_stream import PeekableStream
+from parser import parse
 from os.path import exists
 import os 
 
@@ -17,9 +19,9 @@ def validateArgs():
     if not exists(filepath):
         raise Exception("Invalid file path")
 
-def get_iterator(source):
+def get_iterator(source_file):
     while True:
-        ch = source.read(1)
+        ch = source_file.read(1)
         if ch != "":
             yield ch 
         else:
@@ -31,9 +33,10 @@ def main():
     
     source_file = open(filepath)
     iterator = get_iterator(source_file)
-
-    tokens = tokenize(iterator)
-    print(tokens)
+    peekable_stream = PeekableStream(iterator)
+    tokens = tokenize(peekable_stream)
+    print("Tokens: ", tokens)
+    print("Syntax tree: ", parse(tokens))
 
 if __name__ == '__main__':
     main()
