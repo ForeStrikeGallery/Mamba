@@ -3,6 +3,7 @@ from lexer import tokenize
 from peekable_stream import PeekableStream
 from parser import parse
 from os.path import exists
+from executor import execute
 import os 
 
 
@@ -35,8 +36,13 @@ def main():
     iterator = get_iterator(source_file)
     peekable_stream = PeekableStream(iterator)
     tokens = tokenize(peekable_stream)
-    print("Tokens: ", tokens)
-    print("Syntax tree: ", parse(tokens))
+    # print("Tokens: ", tokens)
+
+    executables = parse(0, tokens)
+    # print("Executables: ", executables)
+
+    execute(executables)
+
 
 if __name__ == '__main__':
     main()

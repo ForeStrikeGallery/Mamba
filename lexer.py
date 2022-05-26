@@ -1,7 +1,7 @@
 
 import re
 
-debug = False
+debug = True 
 
 def log_debug(string):
     if debug:
@@ -40,14 +40,14 @@ def tokenize(stream):
     tokens = list()
     # convert program into a list of tokens 
     while True:
-        log_debug("Tokens: " + str(tokens))
+        # log_debug("Tokens: " + str(tokens))
         try:
             ch = stream.peek_and_move() 
 
             if ch == None:
                 break
 
-            log_debug("top level: " + ch)
+            # log_debug("top level: " + ch)
             if ch in " \n\t": # ignore white spaces 
                 continue
 
