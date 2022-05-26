@@ -1,6 +1,13 @@
 
 import re
 
+debug = False
+
+def log_debug(string):
+    if debug:
+        print(string)
+
+
 def read_string(delim, stream):
     token = ""
 
@@ -33,14 +40,14 @@ def tokenize(stream):
     tokens = list()
     # convert program into a list of tokens 
     while True:
-        print("Tokens: ", tokens)
+        log_debug("Tokens: " + str(tokens))
         try:
             ch = stream.peek_and_move() 
 
             if ch == None:
                 break
 
-            print("top level: ", ch)
+            log_debug("top level: " + ch)
             if ch in " \n\t": # ignore white spaces 
                 continue
 
@@ -65,7 +72,6 @@ def tokenize(stream):
                 tokens.append(("symbol", read(ch, stream, "[_a-zA-Z]")))
 
             else:
-                print("Exception for: ", ch)
                 raise Exception("Invalid character in program: " + ch)   
         except StopIteration:
                 break
