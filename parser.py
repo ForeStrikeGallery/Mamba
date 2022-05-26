@@ -1,4 +1,8 @@
 
+key_words = ["int", "char"]
 
 def parse(tokens):
-    pass 
+    
+    syntax_tree = dict()
+
+

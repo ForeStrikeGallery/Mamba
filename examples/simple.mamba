@@ -1,1 +1,2 @@
-out("hello world")
+~ Out("hello world")
+int a = 3;

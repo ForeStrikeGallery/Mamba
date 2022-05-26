@@ -41,8 +41,14 @@ def tokenize(stream):
                 break
 
             print("top level: ", ch)
-            if ch in " \n\t~": # ignore white spaces and comments 
+            if ch in " \n\t": # ignore white spaces 
                 continue
+
+            if ch in "~":
+                while stream.peek() is not "\n":
+                    stream.move_next()
+
+                continue  
 
             elif ch in "{}();=<>":
                 tokens.append((ch, ""))
