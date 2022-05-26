@@ -1,47 +1,61 @@
 
 import re
 
+debug = True 
 
-def read_string(delim, source_iter):
+def log_debug(string):
+    if debug:
+        print(string)
+
+
+def read_string(delim, stream):
     token = ""
 
     while True:
-        try:
-            ch = next(source_iter)
+        ch = stream.peek_and_move()
+        if ch is not None:
             if ch == delim:
-                break
+                break 
             else:
-                token += ch 
-        except StopIteration:
-            break
+                token += ch
 
-    return token
+    return token 
 
-def read(first_char, source_iter, allowed_chars):
+def read(first_char, stream, allowed_chars):
     token = first_char
 
     while True:
-        try:
-            ch = next(source_iter)
+        ch = stream.peek()
+        if ch is not None:
             if re.match(allowed_chars, ch):
                 token += ch 
+                stream.move_next()
             else:
                 break 
-        except StopIteration:
-            break
 
     return token
 
 
-def tokenize(source_iter):
+def tokenize(stream):
     tokens = list()
     # convert program into a list of tokens 
     while True:
+        # log_debug("Tokens: " + str(tokens))
         try:
-            ch = next(source_iter)
-           # print(ch)
-            if ch in " \n\t~": # ignore white spaces and comments 
+            ch = stream.peek_and_move() 
+
+            if ch == None:
+                break
+
+            # log_debug("top level: " + ch)
+            if ch in " \n\t": # ignore white spaces 
                 continue
+
+            if ch in "~":
+                while stream.peek() is not "\n":
+                    stream.move_next()
+
+                continue  
 
             elif ch in "{}();=<>":
                 tokens.append((ch, ""))
@@ -49,16 +63,15 @@ def tokenize(source_iter):
                 tokens.append(("operator", ch))
 
             elif ch in ('"', "'"):
-                tokens.append(("string", read_string(ch, source_iter)))
+                tokens.append(("string", read_string(ch, stream)))
 
             elif re.match("[.0-9]", ch):
-                tokens.append(("number", read(ch, source_iter, "[.0-9]")))
+                tokens.append(("number", read(ch, stream, "[.0-9]")))
 
             elif re.match("[_a-zA-Z]", ch):  
-                tokens.append(("symbol", read(ch, source_iter, "[_a-zA-Z]")))
+                tokens.append(("symbol", read(ch, stream, "[_a-zA-Z]")))
 
             else:
-                print("Exception for: ", ch)
                 raise Exception("Invalid character in program: " + ch)   
         except StopIteration:
                 break
