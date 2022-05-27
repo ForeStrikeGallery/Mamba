@@ -1,7 +1,7 @@
 
 import re
 
-debug = True 
+debug = True  
 
 def log_debug(string):
     if debug:

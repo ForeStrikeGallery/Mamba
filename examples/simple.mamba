@@ -1,3 +1,5 @@
 ~ this is a comment in mamba
  
 num a;
+num b; 
+string c;
