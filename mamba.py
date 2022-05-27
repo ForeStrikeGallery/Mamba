@@ -38,10 +38,13 @@ def main():
     tokens = tokenize(peekable_stream)
     # print("Tokens: ", tokens)
 
-    executables = parse(0, tokens)
-    # print("Executables: ", executables)
-
-    execute(executables)
+    try:
+        executables = parse(0, tokens)
+        # print("Executables: ", executables)
+    
+        execute(executables)
+    except Exception as e:
+        print("Mamba compilation error: ", e)
 
 
 if __name__ == '__main__':
