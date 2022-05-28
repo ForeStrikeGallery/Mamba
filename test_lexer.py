@@ -1,5 +1,5 @@
 import unittest 
-from .. import peekable_stream
+from peekable_stream import PeekableStream 
 from lexer import tokenize
 
 class TestLexer(unittest.TestCase):
@@ -28,7 +28,7 @@ class TestLexer(unittest.TestCase):
 
     def test_tokenize_comments(self):
 
-        source = "~ this is a comment"
+        source = "~"
         p = PeekableStream(iter(source))
 
         expected_tokens = []
@@ -36,6 +36,6 @@ class TestLexer(unittest.TestCase):
 
         self.assertEquals(expected_tokens, actual_tokens)
 
-         
 if __name__ == '__main__':
     unittest.main()
+

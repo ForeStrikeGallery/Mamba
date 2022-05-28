@@ -32,52 +32,40 @@ def read(first_char, stream, allowed_chars):
                 stream.move_next()
             else:
                 break 
-
+        else:
+            break
     return token
 
+def skip_line(stream):
+    while stream.peek() is not "\n" and stream.peek() is not None:
+        stream.move_next()
+        
 
 def tokenize(stream):
     tokens = list()
-    # convert program into a list of tokens 
-    while True:
-        # log_debug("Tokens: " + str(tokens))
-        try:
-            ch = stream.peek_and_move() 
 
-            if ch == None:
-                break
+    ch = " " 
 
-            # log_debug("top level: " + ch)
-            if ch in " \n\t": # ignore white spaces 
-                continue
+    while ch is not None:
+        if ch in " \n\t": # ignore white spaces 
+            pass 
+        elif ch in "~":
+            skip_line(stream)
+        elif ch in "{}();=<>":
+            tokens.append((ch, ""))
+        elif ch in "+-/*":
+            tokens.append(("operator", ch))
+        elif ch in ('"', "'"):
+            tokens.append(("string", read_string(ch, stream)))
+        elif re.match("[.0-9]", ch):
+            tokens.append(("number", read(ch, stream, "[.0-9]")))
+        elif re.match("[_a-zA-Z]", ch):  
+            tokens.append(("symbol", read(ch, stream, "[_a-zA-Z]")))
+        else:
+            raise Exception("Invalid character in program: " + ch)   
 
-            if ch in "~":
-                while stream.peek() is not "\n":
-                    stream.move_next()
-
-                continue  
-
-            elif ch in "{}();=<>":
-                tokens.append((ch, ""))
-            elif ch in "+-/*":
-                tokens.append(("operator", ch))
-
-            elif ch in ('"', "'"):
-                tokens.append(("string", read_string(ch, stream)))
-
-            elif re.match("[.0-9]", ch):
-                tokens.append(("number", read(ch, stream, "[.0-9]")))
-
-            elif re.match("[_a-zA-Z]", ch):  
-                tokens.append(("symbol", read(ch, stream, "[_a-zA-Z]")))
-
-            else:
-                raise Exception("Invalid character in program: " + ch)   
-        except StopIteration:
-                break
+        ch = stream.peek_and_move()
 
     return tokens
-
-        
 
              
