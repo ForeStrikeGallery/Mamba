@@ -51,7 +51,7 @@ def tokenize(stream):
             pass 
         elif ch in "~":
             skip_line(stream)
-        elif ch in "{}();=<>":
+        elif ch in "{}();=<>,":
             tokens.append((ch, ""))
         elif ch in "+-/*":
             tokens.append(("operator", ch))
