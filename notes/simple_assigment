@@ -1,0 +1,53 @@
+## Stream of consciousness
+ 
+How do we implement an assignment?
+
+E.g. x = 3
+
+what variations are possible?
+
+x, y = 3
+
+x + y = 3
+
+Let's consider the simplest case, and go on to the more complex ones later. 
+
+In the simplest case, there's an already declared identifier, followed by the `=` signs, followed by some value.
+
+The value can be a number, a string, or another already declared identifier. 
+
+As a first step, we should figure out the syntax for it. How about:
+
+"assignment": {
+    "assignee": identifier 
+    "value": {
+        "data_type": num/string,
+        "value": 123
+    }
+}
+
+alternatively, or.. 
+
+how do we parse it? 
+
+I see an identifier.. and i think, cool so there's an identifier here. But what is it doing here? It has to be part of some assignment, or declaration, otherwise it has no business being here. 
+
+If the line starts with an identifier, that's the only way to interpret it. 
+
+So if I find a symbol that's not in keywords, the next token better be an `=` or an operand, otherwise it should throw a parsing error. Expected a declarion or an assigment. 
+
+Wait, no.. the symbol after the identifier *has* to be `=`. 
+
+okay, so whatever, we do this: 
+
+
+
+
+
+
+
+
+
+
+
+

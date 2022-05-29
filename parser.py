@@ -1,6 +1,6 @@
 
-key_words = ["num", "string"]
-
+key_words = ["num", "string", "loop", "if", "else"]
+data_types = ["num", "string"]
 
 def is_identifier(index, tokens):
    # print(index, tokens)
@@ -20,12 +20,14 @@ def create_declaration(index, tokens, data_type):
 
 
     if not index + 1 < len(tokens) or not tokens[index + 1][0] == ";":
-        print(tokens, index, syntax_tree)
         raise Exception("Expected ; after declaration")
 
     index += 2
 
     return (index, syntax_tree)
+
+def create_assigment(index, tokens):
+    pass 
 
 
 def create_tree(index, tokens):
@@ -33,10 +35,15 @@ def create_tree(index, tokens):
     syntax_tree = dict()
 
     if tokens[index][0] == "symbol":
-        if tokens[index][1] == "num":
-            index, syntax_tree["declaration"] = create_declaration(index, tokens, "num")
-        elif tokens[index][1] == "string":
-            index, syntax_tree["declaration"] = create_declaration(index, tokens, "string")
+        if tokens[index][1] in data_types:
+            data_type = tokens[index][1] 
+            index, declaration = create_declaration(index, tokens, data_type)
+            syntax_tree["declaration"] = declaration 
+        elif tokens[index][1] in keywords:
+            pass
+        else:
+            # assignment of identifier 
+            index, assigment = create_assigment(index, tokens)
 
     return (index, syntax_tree)
 

@@ -1,8 +1,6 @@
 import unittest 
 from peekable_stream import PeekableStream 
 from lexer import tokenize
-import logging 
-from parser import parse 
 
 class TestLexer(unittest.TestCase):
 
@@ -38,23 +36,6 @@ class TestLexer(unittest.TestCase):
 
         self.assertEquals(expected_tokens, actual_tokens)
 
-    def test_parser_int_assigment(self):
-        
-        source = "int a;\n a = 3;"
-        p = PeekableStream(iter(source))
-
-        expected_tokens = []
-        logging.debug(tokenize(p))
-        tokens = tokenize(p)
-
-        executables = parse(0, tokenize(tokens))
-        logging.debug(executables)
-
-
 if __name__ == '__main__':
     unittest.main()
-
-
-
-
 

@@ -1,6 +1,8 @@
-
 import re
+import logging 
+import logging 
 
+logging.basicConfig(level=logging.DEBUG)
 debug = True  
 
 def log_debug(string):
@@ -37,10 +39,9 @@ def read(first_char, stream, allowed_chars):
     return token
 
 def skip_line(stream):
-    while stream.peek() is not "\n" and stream.peek() is not None:
+    while stream.peek() != "\n" and stream.peek() is not None:
         stream.move_next()
         
-
 def tokenize(stream):
     tokens = list()
 

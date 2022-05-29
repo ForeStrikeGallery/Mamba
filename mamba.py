@@ -5,7 +5,9 @@ from parser import parse
 from os.path import exists
 from executor import execute
 import os 
+import logging 
 
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(message)s")
 
 def validateArgs():
 
@@ -36,12 +38,9 @@ def main():
     iterator = get_iterator(source_file)
     peekable_stream = PeekableStream(iterator)
     tokens = tokenize(peekable_stream)
-    # print("Tokens: ", tokens)
 
     try:
         executables = parse(0, tokens)
-        # print("Executables: ", executables)
-    
         execute(executables)
     except Exception as e:
         print("Mamba compilation error: ", e)

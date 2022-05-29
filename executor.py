@@ -1,4 +1,5 @@
 from lexer import log_debug 
+import logging 
 
 global_variables = dict()
 
@@ -29,14 +30,14 @@ def create_num_variable(mamba_vname):
 
 	val = 0
 	global_variables[mamba_vname] = val 
-	log_debug("variable of type num declared")
-	log_debug(global_variables)
+	logging.debug("variable of type num declared")
+	logging.debug("Global variables: " + str(global_variables))
 
 
 def create_string_variable(mamba_vname):
 
     val = ""
     global_variables[mamba_vname] = val
-    log_debug("variable of type string declared")
-    log_debug(global_variables)
+    logging.debug("variable of type string declared")
+    logging.debug("Global variables: " + str(global_variables))
 
