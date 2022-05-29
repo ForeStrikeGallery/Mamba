@@ -38,17 +38,24 @@ class TestLexer(unittest.TestCase):
 
         self.assertEquals(expected_tokens, actual_tokens)
 
-    def test_parser_int_assigment(self):
+    def test_fail_parsing_when_no_equals_after_identifier(self):
         
-        source = "int a;\n a = 3;"
+        source = "int a;\n a + 3;"
         p = PeekableStream(iter(source))
 
-        expected_tokens = []
-        logging.debug(tokenize(p))
         tokens = tokenize(p)
+        with self.assertRaises(ValueError):
+            parse(0, tokens) 
 
-        executables = parse(0, tokenize(tokens))
-        logging.debug(executables)
+    def test_fail_parsing_when_no_value_after_equals(self):
+
+        source = "int a; a = + 4";
+        p = PeekableStream(iter(source))
+
+        tokens = tokenize(p)
+        parse(0, tokens)
+        with self.assertRaises(ValueError):
+            parse(0, tokens) 
 
 
 if __name__ == '__main__':

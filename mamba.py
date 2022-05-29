@@ -22,6 +22,12 @@ def validateArgs():
     if not exists(filepath):
         raise Exception("Invalid file path")
 
+    file_extension = filepath.split("/")[-1].split(".")[-1]
+
+    logging.debug(file_extension)
+    if file_extension != "mamba":
+        raise Exception("Invalid file type. Mamba only interprets .mamba files")
+
 def get_iterator(source_file):
     while True:
         ch = source_file.read(1)
@@ -30,13 +36,16 @@ def get_iterator(source_file):
         else:
             break
 
+def create_stream_from(filepath):
+    source_file = open(filepath)
+    iterator = get_iterator(source_file)
+    return PeekableStream(iterator)
+
 def main():
     validateArgs()   
     filepath = sys.argv[1]
-    
-    source_file = open(filepath)
-    iterator = get_iterator(source_file)
-    peekable_stream = PeekableStream(iterator)
+   
+    peekable_stream = create_stream_from(filepath)
     tokens = tokenize(peekable_stream)
 
     try:
@@ -44,7 +53,6 @@ def main():
         execute(executables)
     except Exception as e:
         print("Mamba compilation error: ", e)
-
 
 if __name__ == '__main__':
     main()

@@ -1,3 +1,5 @@
+import logging 
+
 
 key_words = ["num", "string", "loop", "if", "else"]
 data_types = ["num", "string"]
@@ -7,7 +9,6 @@ def is_identifier(index, tokens):
     return index < len(tokens) and tokens[index][0] == "symbol" and tokens[index][1] not in key_words
 
 def create_declaration(index, tokens, data_type):
-
     syntax_tree = dict()
     index += 1
 
@@ -27,7 +28,18 @@ def create_declaration(index, tokens, data_type):
     return (index, syntax_tree)
 
 def create_assigment(index, tokens):
-    pass 
+    ## form the identifier 
+
+    syntax_tree = dict()
+    identifier = tokens[index][1]
+
+    # if next value is not `=`, throw an exception 
+    index += 1
+    logging.debug(tokens)
+    logging.debug(tokens[index])
+    if tokens[index][1] != "=":
+        raise ValueError("Expected assignment operator after identifier: "
+                        + identifier)
 
 
 def create_tree(index, tokens):
@@ -39,8 +51,10 @@ def create_tree(index, tokens):
             data_type = tokens[index][1] 
             index, declaration = create_declaration(index, tokens, data_type)
             syntax_tree["declaration"] = declaration 
-        elif tokens[index][1] in keywords:
+        elif tokens[index][1] in key_words:
             pass
+        elif tokens[index][1] is ";":
+            raise ValueError("Unexpected ';'")
         else:
             # assignment of identifier 
             index, assigment = create_assigment(index, tokens)
@@ -55,5 +69,4 @@ def parse(index, tokens):
     while index < len(tokens):
         index, syntax_tree = create_tree(index, tokens)
         executables.append(syntax_tree)
-
     return executables
