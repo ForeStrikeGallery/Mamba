@@ -24,8 +24,7 @@ As a first step, we should figure out the syntax for it. How about:
         "data_type": num/string,
         "value": 123
     }
-}
-
+j
 alternatively, or.. 
 
 how do we parse it? 
@@ -40,8 +39,83 @@ Wait, no.. the symbol after the identifier *has* to be `=`.
 
 okay, so whatever, we do this: 
 
+We have to recursively parse the function. 
+
+a = 3 + 4*b + c;
+
+(a = (3 + (4 * (b)) + (c + (d + (f))));
+
+what if there's a fucntion call? 
+
+a = getCall(b);
+
+"assignment": {
+    "assignee": a
+    "value": {
+        "call": {
+            "name": "getCall",
+            "arguments": ["b"]
+        }
+    }
+}
+
+Here's the logic then: 
+
+while (not ";" found):
+    token = next(token)
+        
+    // as a first step, you have to decide if what's going on is one of three things:
+
+    // it's an assingment
+    // it's a loop
+    // it's a function definition
+    // it's a declaration 
 
 
+    // once you know that, you can take different steps for each of them
+
+
+    if (token == identifier):
+        constructAssigment(tokens, index)
+    elif (token == "if"):
+        constructDecision(tokens, index)
+    elif (token == "loop"):
+        constructLoop(tokens, index)
+    elif (token == "fun")"
+        constructMethod(tokens, index)    
+
+
+constructAssignment(tokens, index):
+
+    validateAssigment(tokens, index) // check for "=" 
+    evalExpression(tokens + 2, index)
+
+evalExpression(tokens, index, can_end, paranthesis):
+
+    if (token == ";" and not can_end):
+        "unexpected end"
+
+    if (token == keyword):
+        "unexpected keyword"
+
+    if token, token+1 end:
+        set value as token
+
+    if token, token+1 fun:
+        create func
+    
+    if token, token+1 assigment
+        create assignment 
+
+    if token = paranethesis
+        keep track of it, see if it gets closed 
+
+    a +, b - 
+    get() - 
+
+    get(constructParams()) - 
+
+    
 
 
 

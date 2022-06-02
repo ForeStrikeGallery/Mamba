@@ -3,8 +3,14 @@ from peekable_stream import PeekableStream
 from lexer import tokenize
 import logging 
 from parser import parse 
+import parser
+import json
+
 
 class TestLexer(unittest.TestCase):
+
+    def get_tokens(self, source):
+        return tokenize(PeekableStream(iter(source)))
 
     def test_sample(self):
         self.assertTrue(True)
@@ -38,29 +44,25 @@ class TestLexer(unittest.TestCase):
 
         self.assertEquals(expected_tokens, actual_tokens)
 
-    def test_fail_parsing_when_no_equals_after_identifier(self):
+    def test_fail_construct_assigment_when_no_equals_after_identifier(self):
+
+        source = "a + 2"
+        tokens = tokenize(PeekableStream(iter(source)))
+    
+        self.assertRaises(ValueError, parser.construct_assignment, tokens, 0) 
+
+    def test_construct_simple_assigment(self):
         
-        source = "int a;\n a + 3;"
-        p = PeekableStream(iter(source))
+        source = "a = 3;"
+        tokens = self.get_tokens(source)
+        
+        assignment_sub_tree = json.loads('{"assignment": {"assignee": "a", "value": 3}}')
+        assignment_sub_tree = dict(assignment_sub_tree)
 
-        tokens = tokenize(p)
-        with self.assertRaises(ValueError):
-            parse(0, tokens) 
-
-    def test_fail_parsing_when_no_value_after_equals(self):
-
-        source = "int a; a = + 4";
-        p = PeekableStream(iter(source))
-
-        tokens = tokenize(p)
-        parse(0, tokens)
-        with self.assertRaises(ValueError):
-            parse(0, tokens) 
-
+        self.assertEquals(assignment_sub_tree, parser.construct_assignment(tokens, 0)[1])
 
 if __name__ == '__main__':
     unittest.main()
-
 
 
 
